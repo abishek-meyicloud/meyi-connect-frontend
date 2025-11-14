@@ -1,0 +1,36 @@
+import React, { useState } from 'react'
+import useDialogState from '@/hooks/use-dialog-state'
+import { type Task } from '../data/schema'
+
+type TasksDialogType = 'create' | 'update' | 'delete' | 'import'
+
+type TasksContextType = {
+  open: TasksDialogType | null
+  setOpen: (str: TasksDialogType | null) => void
+  currentRow: Task | null
+  setCurrentRow: React.Dispatch<React.SetStateAction<Task | null>>
+}
+
+const TasksContext = React.createContext<TasksContextType | null>(null)
+
+export function KeysProvider({ children }: { children: React.ReactNode }) {
+  const [open, setOpen] = useDialogState<TasksDialogType>(null)
+  const [currentRow, setCurrentRow] = useState<Task | null>(null)
+
+  return (
+    <TasksContext value={{ open, setOpen, currentRow, setCurrentRow }}>
+      {children}
+    </TasksContext>
+  )
+}
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const useKeys = () => {
+  const keysContext = React.useContext(TasksContext)
+
+  if (!keysContext) {
+    throw new Error('useKeys has to be used within <KeysContext>')
+  }
+
+  return keysContext
+}
