@@ -51,6 +51,11 @@ export const sidebarData: SidebarData = {
           url: '/users',
           icon: Users,
         },
+        {
+          title: 'Teams',
+          url: '/teams',
+          icon: Users,
+        },
       ],
     },
     {
